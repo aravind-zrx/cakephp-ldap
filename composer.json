@@ -8,7 +8,7 @@
     },
     "autoload": {
          "psr-4": {
-             "LdapUtility\\": "./plugins/LdapUtility/src"
+             "LdapUtility\\": "src"
          }
      },
     "version": "0.1",
