@@ -7,10 +7,10 @@
         "cakephp/cakephp": ">3.1"
     },
     "autoload": {
- +        "psr-4": {
- +            "LdapUtility\\": "./plugins/LdapUtility/src"
- +        }
- +    },
+         "psr-4": {
+             "LdapUtility\\": "./plugins/LdapUtility/src"
+         }
+     },
     "version": "0.1",
     "license": "MIT",
     "minimum-stability": "dev"
