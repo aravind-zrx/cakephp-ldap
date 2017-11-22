@@ -1,5 +1,5 @@
 {
-    "name": "LdapUtility",
+    "name": "aravind-zrx/cakephp-ldap",
     "description": "Cakephp-ldap-utility plugin for CakePHP",
     "type": "cakephp-plugin",
     "require": {
