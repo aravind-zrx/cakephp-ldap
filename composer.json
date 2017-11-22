@@ -1,7 +1,8 @@
 {
     "name": "aravind-zrx/cakephp-ldap",
     "description": "LDAP utility plugin for cakephp",
-    "type": "library",
+    "type": "cakephp-plugin",
+    "homepage": "https://github.com/aravind-zrx/cakephp-ldap"
     "require": {
         "cakephp/cakephp": ">3.1"
     },
