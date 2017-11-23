@@ -46,10 +46,26 @@ Basic configuration for creating ldap handler instance
 	$ldapHandler = new LdapUtility\Ldap($config);
 ```
 
-Setup Ldap authentication config in Controller
+#### Config parameters
+
+| Parameter | Description |
+| --------- | ----------- |
+| `host` | Host name of LDAP server |
+| `port` | Port to connect with LDAP server. Defaults to 389 |
+| `baseDn` | Base Distinguished name (DN) |
+| `startTLS` | Boolean to decide on connection with/without TLS. Defaults to false|
+| `hideErrors` | Boolean to show/hide LDAP errors. Defaults to false |
+| `commonBindDn` | Common bind DN. Used in the case of readonly operations |
+| `commonBindPassword` | Passowrd for common bind DN |
+
+
+
+#### Setup Ldap authentication config in Controller
+
+Parameters for setting LDAP authentication has all the parameters of LDAP handler connection except commonBindDn and commonBindPassowrd
 
 ```php
-    // In your controller, for e.g. src/Api/AppController.php
+    // In your controller, for e.g. src/Api/UsersController.php
     public function initialize()
     {
         parent::initialize();
@@ -63,11 +79,13 @@ Setup Ldap authentication config in Controller
 			        'baseDn' => 'dc=example,dc=com',
 			        'startTLS' => true,
 			        'hideErrors' => true,
-			        'commonBindDn' => 'cn=readonly.user,ou=people,dc=example,dc=com',
-			        'commonBindPassword' => 'secret',
-			        'fields' => ['username' => 'email', 'password' => 'password'],
+			        'queryDatasource' => true,
                     'userModel' => 'Users',
-                    'queryDatasource' => true
+                    'fields' => ['username' => 'email'],
+                    'auth' => [
+		                'searchFilter' => '(cn={username})',
+		                'bindDn' => 'cn={username},ou=people,dc=example,dc=com'
+		            ]
 				]
             ],
 
@@ -76,6 +94,17 @@ Setup Ldap authentication config in Controller
         ]);
     }
 ```
+
+Auth specific configs
+
+| Parameter | Description |
+| --------- | ----------- |
+| `auth.searchFilter` | search filter syntax with username placeholder. The placeholder will be replaced by username data from request. This is used to read LDAP data entry of the authenticated user |
+| `auth.bindDn` | bind DN syntax with username placeholder between braces. The placeholder will be replaced by username data from request |
+| `queryDataSource` | Boolean to decide whether to query app datasource after successful LDAP authentication |
+| `userModel` | If queryDataSource is set, userModel table will be used for base authentication |
+| `fields.username` | If queryDataSource is set, authenticate class will use field.username as field condition for base authentication |
+
 
 ## Example:
 

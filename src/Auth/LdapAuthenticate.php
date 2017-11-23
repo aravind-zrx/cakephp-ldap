@@ -48,7 +48,11 @@ class LdapAuthenticate extends BaseAuthenticate
             'hideErrors' => false,
             'queryDatasource' => true,
             'userModel' => 'Users',
-            'fields' => ['username' => 'email']
+            'fields' => ['username' => 'email'],
+            'auth' => [
+                'searchFilter' => '',
+                'bindDn' => ''
+            ]
         ]);
         parent::__construct($registry, $config);
 
