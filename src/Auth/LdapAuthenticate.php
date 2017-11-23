@@ -24,10 +24,32 @@ class LdapAuthenticate extends BaseAuthenticate
     /**
      * Constructor
      *
+     * Auth settings
+     * -`host` - LDAP host name
+     * -`port` - port to connect - defaults to 389
+     * -`protocol_version` - LDAP protocol version, defaults to 3
+     * -`baseDN` - base DN
+     * -`startTLS` - bool value whether to est connection with TLS
+     * -`hideErrors` - bool value whether to suppress errors and warnings - defaults to false
+     * -`queryDatasource` - boolean to decide whether to query app datasource after ldap authentication
+          defaults to true
+     * -`userModel` - If `queryDatasource` is set, table name to query. defaults to Users
+     * -`fields.username` - The field to query on the userModel. defaults to email
      * {@inheritDoc}
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
+        $this->config([
+            'host' => '',
+            'port' => 389,
+            'protocol_version' => 3,
+            'baseDn' => '',
+            'startTLS' => false,
+            'hideErrors' => false,
+            'queryDatasource' => true,
+            'userModel' => 'Users',
+            'fields' => ['username' => 'email']
+        ]);
         parent::__construct($registry, $config);
 
         $this->ldap = new ldap($config);
@@ -60,6 +82,10 @@ class LdapAuthenticate extends BaseAuthenticate
 
         if (!$ldapUserDetails || empty($ldapUserDetails[0]['mail'][0])) {
             return false;
+        }
+
+        if (!$this->_config['queryDatasource']) {
+            return $ldapUserDetails;
         }
 
         if (!empty($ldapUserDetails['role_suffix'])) {
